@@ -2,8 +2,8 @@
 
 # Modules
 import json
+from modules import *
 from flask import Flask, jsonify
-from modules import Database, Pet
 
 # Create flask object
 app = Flask(__name__)
@@ -24,9 +24,12 @@ def petList():
     # Fetch pets in the database
     pet_list = connection.list()
 
-    # Return list of pets
-    # TODO: Convert to JSON
-    return pet_list
+    # Return data if these present
+    # otherwise return empty JSON
+    if pet_list:
+        return createResponse(app, pet_list)
+    else:
+        return createResponse(app, "{}")
 
 @app.route("/update/<int:pet_id>", methods=["POST"])
 def petUpdate(pet_id, pet):
@@ -57,4 +60,4 @@ def page_not_found(error):
         Returns:
             JSON: Empty JSON response
     """
-    return jsonify({"It seems like you entered the wrong url.")
+    return jsonify("It seems like you entered the wrong url.")

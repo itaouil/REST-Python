@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import pymysql.cursors
 
 class Database:
@@ -46,11 +48,13 @@ class Database:
         """
         try:
             with self.connection.cursor() as cursor:
-                # Read a single record
+                # Read all entries in the table
                 sql = "SELECT `*` FROM `pets`"
                 cursor.execute(sql)
+
+                # Fetch results
                 result = cursor.fetchone()
-                print(result)
+
                 return result
 
         finally:

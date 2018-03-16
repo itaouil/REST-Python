@@ -1,4 +1,4 @@
-import pymysql.cursors
+#!/usr/bin/python
 
 class Pet:
 
