@@ -14,7 +14,7 @@ class Database:
         try:
             with self.connection.cursor() as cursor:
                 # Add record to pets table
-                sql = "UPDATE `pets` SET name=`name`, species=`species`, gender=`gender`, birthday=`birthday`) WHERE id=`id`"
+                sql = "UPDATE `pets` SET `name`=%s, `species`=%s, `gender`=%c, `birthday`=%d) WHERE `id`=%s"
                 cursor.execute(sql, (pet.name, pet.species, pet.gender, pet.birthday, id))
 
             # Save changes
