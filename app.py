@@ -32,7 +32,7 @@ def petList():
         return createResponse(app, "{}")
 
 @app.route("/update/<int:pet_id>", methods=["POST"])
-def petUpdate(pet_id, pet):
+def petUpdate(pet_id):
     """
         Updates a particular pet
         entry with the given ID.
@@ -41,14 +41,27 @@ def petUpdate(pet_id, pet):
             int: Pet's ID
             Pet: Pet object
     """
-    # Load JSON
+    if request.method == "POST":
+        # Parse incoming data into JSON
+        data = request.get_json()
 
+        # Get JSON fields
+        name = data['name']
+        gender = data['gender']
+        species = data['species']
+        birthday = data['birthday']
 
-    # Create database connection
-    connection = Database()
+        # Build Pet object
+        pet = Pet(name, gender, species, birthday)
 
-    # Fetch pets in the database
-    connection.update(pet_id, pet)
+        # Create database connection
+        connection = Database()
+
+        # Fetch pets in the database
+        connection.update(pet_id, pet)
+
+    else:
+        return createResponse(app, "{}")
 
 @app.errorhandler(404)
 def page_not_found(error):
