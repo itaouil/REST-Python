@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 # Modules
-from flask import Flask
-from modules.db import Database
-from modules.pet import Pet
+import json
+from flask import Flask, jsonify
+from modules import Database, Pet
 
 # Create flask object
 app = Flask(__name__)
@@ -36,8 +36,11 @@ def petUpdate(pet_id, pet):
 
         Arguments:
             int: Pet's ID
-            Pet: Pet object (with new values)
+            Pet: Pet object
     """
+    # Load JSON
+
+
     # Create database connection
     connection = Database()
 
@@ -54,4 +57,4 @@ def page_not_found(error):
         Returns:
             JSON: Empty JSON response
     """
-    return "It seems like you entered the wrong url."
+    return jsonify({"It seems like you entered the wrong url.")
