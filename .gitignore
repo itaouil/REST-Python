@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/macos,python
+# Created by https://www.gitignore.io/api/macos,python,virtualenv
 
 ### macOS ###
 *.DS_Store
@@ -128,5 +128,20 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+### VirtualEnv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+./fedger
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Mm]an
+[Ss]cripts
+[Tt]cl
+pyvenv.cfg
+pip-selfcheck.json
 
-# End of https://www.gitignore.io/api/macos,python
+
+# End of https://www.gitignore.io/api/macos,python,virtualenv
