@@ -58,9 +58,9 @@ def addPet():
         connection = Database()
 
         # Fetch pets in the database
-        connection.add(pet)
+        result = connection.add(pet)
 
-        return createResponse(app, "{sucess: True}")
+        return createResponse(app, "{sucess: True}") if result else createResponse(app, "{sucess: False}")
     else:
         return createResponse(app, "{}")
 
@@ -71,7 +71,6 @@ def updatePet():
         entry with the given ID.
 
         Arguments:
-            int: Pet's ID
             Pet: Pet object
     """
     if request.method == "POST":
@@ -94,9 +93,9 @@ def updatePet():
         connection = Database()
 
         # Fetch pets in the database
-        connection.update(id, pet)
+        result = connection.update(id, pet)
 
-        return createResponse(app, "{}")
+        return createResponse(app, "{sucess: True}") if result else createResponse(app, "{sucess: False}")
     else:
         return createResponse(app, "{}")
 

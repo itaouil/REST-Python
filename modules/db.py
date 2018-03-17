@@ -26,13 +26,19 @@ class Database:
             Arguments:
                 Pet: Pet object
         """
-        with self.connection.cursor() as cursor:
-            # Create a new record
-            sql = "INSERT INTO `pets` (`name`, `gender`, `species`, `birthday`) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, (pet.name, pet.gender, pet.species, datetime.fromtimestamp(pet.birthday)))
+        try:
+            with self.connection.cursor() as cursor:
+                # Create a new record
+                sql = "INSERT INTO `pets` (`name`, `gender`, `species`, `birthday`) VALUES (%s, %s, %s, %s)"
+                result = cursor.execute(sql, (pet.name, pet.gender, pet.species, datetime.fromtimestamp(pet.birthday)))
 
-        # Save changes
-        self.connection.commit()
+            # Save changes
+            self.connection.commit()
+
+            return result
+
+        finally:
+            self.connection.close()
 
     def update(self, id, pet):
         """
@@ -47,10 +53,12 @@ class Database:
             with self.connection.cursor() as cursor:
                 # Add record to pets table
                 sql = "UPDATE `pets` SET `name`=%s, `species`=%s, `gender`=%s, `birthday`=%s WHERE `id`=%s"
-                cursor.execute(sql, (pet.name, pet.species, pet.gender, datetime.fromtimestamp(pet.birthday), id))
+                result = cursor.execute(sql, (pet.name, pet.species, pet.gender, datetime.fromtimestamp(pet.birthday), id))
 
             # Save changes
             self.connection.commit()
+
+            return result
 
         finally:
             self.connection.close()
@@ -69,11 +77,8 @@ class Database:
                 sql = "SELECT `*` FROM `pets`"
                 cursor.execute(sql)
 
-                # Fetch results
-                result = cursor.fetchone()
-                print("Result: ", result)
-
-                return result
+                # Return query results
+                return cursor.fetchall()
 
         finally:
             self.connection.close()
