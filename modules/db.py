@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import pymysql.cursors
+from datetime import datetime
 
 class Database:
 
@@ -8,7 +9,7 @@ class Database:
         """
             Constructor.
 
-            Sets the connection state.
+            Creates the connection object.
         """
         self.connection = pymysql.connect(host='localhost',
                                           user='root',
@@ -16,6 +17,22 @@ class Database:
                                           db='petdb',
                                           charset='utf8mb4',
                                           cursorclass=pymysql.cursors.DictCursor)
+
+    def add(self, pet):
+        """
+            Adds a pet entry in the
+            pets database.
+
+            Arguments:
+                Pet: Pet object
+        """
+        with self.connection.cursor() as cursor:
+            # Create a new record
+            sql = "INSERT INTO `pets` (`name`, `gender`, `species`, `birthday`) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (pet.name, pet.gender, pet.species, datetime.fromtimestamp(pet.birthday)))
+
+        # Save changes
+        self.connection.commit()
 
     def update(self, id, pet):
         """
@@ -29,8 +46,8 @@ class Database:
         try:
             with self.connection.cursor() as cursor:
                 # Add record to pets table
-                sql = "UPDATE `pets` SET `name`=%s, `species`=%s, `gender`=%c, `birthday`=%d) WHERE `id`=%s"
-                cursor.execute(sql, (pet.name, pet.species, pet.gender, pet.birthday, id))
+                sql = "UPDATE `pets` SET `name`=%s, `species`=%s, `gender`=%s, `birthday`=%s WHERE `id`=%s"
+                cursor.execute(sql, (pet.name, pet.species, pet.gender, datetime.fromtimestamp(pet.birthday), id))
 
             # Save changes
             self.connection.commit()
@@ -41,7 +58,7 @@ class Database:
     def list(self):
         """
             Fetches all instances of the
-            pets databse.
+            pets database.
 
             Returns:
                 list: List of database entries
@@ -54,6 +71,7 @@ class Database:
 
                 # Fetch results
                 result = cursor.fetchone()
+                print("Result: ", result)
 
                 return result
 

@@ -3,13 +3,13 @@
 # Modules
 import json
 from modules import *
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 
 # Create flask object
 app = Flask(__name__)
 
 @app.route("/list", methods=["GET"])
-def petList():
+def listPets():
     """
         Fetches all entries from
         the database and returns
@@ -31,8 +31,41 @@ def petList():
     else:
         return createResponse(app, "{}")
 
-@app.route("/update/<int:pet_id>", methods=["POST"])
-def petUpdate(pet_id):
+@app.route("/add", methods=["POST"])
+def addPet():
+    """
+        Fetches all entries from
+        the database and returns
+        them in JSON format.
+
+        Returns:
+            JSON: List of pets
+    """
+    if request.method == "POST":
+        # Parse incoming data into JSON
+        data = request.get_json()
+
+        # Get JSON fields
+        name     = data['name']
+        gender   = data['gender']
+        species  = data['species']
+        birthday = data['birthday']
+
+        # Build Pet object
+        pet = Pet(name, gender, species, birthday)
+
+        # Create database connection
+        connection = Database()
+
+        # Fetch pets in the database
+        connection.add(pet)
+
+        return createResponse(app, "{sucess: True}")
+    else:
+        return createResponse(app, "{}")
+
+@app.route("/update", methods=["POST"])
+def updatePet():
     """
         Updates a particular pet
         entry with the given ID.
@@ -46,10 +79,13 @@ def petUpdate(pet_id):
         data = request.get_json()
 
         # Get JSON fields
-        name = data['name']
-        gender = data['gender']
-        species = data['species']
+        id       = data['id']
+        name     = data['name']
+        gender   = data['gender']
+        species  = data['species']
         birthday = data['birthday']
+
+        print(id, name, gender, species, birthday)
 
         # Build Pet object
         pet = Pet(name, gender, species, birthday)
@@ -58,8 +94,9 @@ def petUpdate(pet_id):
         connection = Database()
 
         # Fetch pets in the database
-        connection.update(pet_id, pet)
+        connection.update(id, pet)
 
+        return createResponse(app, "{}")
     else:
         return createResponse(app, "{}")
 
