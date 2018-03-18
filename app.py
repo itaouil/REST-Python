@@ -6,11 +6,10 @@ from modules import *
 from flasgger import Swagger
 from flasgger.utils import swag_from
 from flask import Flask, request, jsonify
-from flask_swagger import swagger
 
 # Create flask object
 app = Flask(__name__)
-swag = Swagger(app)
+Swagger(app)
 
 @app.route("/list", methods=["GET"])
 @swag_from('./specs/list.yml')

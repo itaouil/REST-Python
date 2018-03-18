@@ -1,25 +1,45 @@
-# **REST-Python (Coding challenge)**
+# **REST-Python**
 
-## Task Description
+## Installs
 
-Specify, implement and test a RESTful HTTP-Web-Service to list and update pet information. In detail your tasks are:
+Please install flask, flasgger and PyMySQL for the application to run (preferably on your set virtual environment):
 
-* Write a RESTful HTTP-Web-API specification in [Swagger](http://swagger.io/specification/)
-  * API requests and responses shall be in JSON
-* Store the pet data in a MySQL database
-  * `SQLModel.sql` contains the schema definition and initial dump of data
-* Provide an RESTful HTTP-Web-Service Service with:
-  * An endpoint to list all stored pets
-  * An endpoint to update one pet by its id
-  * Implement those endpoints in Python 3
-* Write unit / integration tests for your endpoints
-* Provide a README file with usage / run instructions and a short description of your work
+```Python
+pip install Flask-API && pip install flask-swagger && pip install PyMySQL
+```
 
-### Hints
+Clone the repo on your machine:
 
-* You may use the builtin MySQL tools to import the dump
-* Use any pure Python frameworks and libraries you like
-* Use good and established coding standards and naming
-* You may use [`PyMySQL`](https://github.com/PyMySQL/PyMySQL) to connect to MySQL
-* Even if your implementation is not 100% working, please hand in your results anyway
-* Send questions regarding the task to thomas@fedger.io
+```Python
+cd <your-directory> && git clone https://github.com/itaouil/REST-Python.git
+```
+
+## Database model (dump)
+
+A database dump is provided in the dumps folder, create a mysql user using the terminal and run the following command in your terminal to dump the sql content locally on your machine:
+
+```MySQL
+mysql -u root -p -h localhost <database_name> < SQLModel.sql
+```
+
+## Run
+
+Now that you have installed the required modules, you can run the application by doing the following:
+
+```Python
+export FLASK_APP=app.py
+flask run
+```
+
+The application is now running on port 5000 (by default) and you can access the endpoints. To access the spec of the API access the following URL:
+
+**http://localhost:5000/apidocs/**
+
+## TODO
+
+I spent around 4/5 hours on the task, mostly researching about swagger and how to integrate it into the API, hence there are quite a lot of improvements I would made if this was a production service, mainly:
+
+1. Input validation (maybe using endpoint specs)
+2. Handle database exception
+3. Write better unit/integration tests (I was limited on the time because of other projects so I mainly used    postman for this one)
+4. Better API implementation (maybe using blueprints in FLASK)
