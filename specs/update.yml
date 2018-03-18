@@ -1,0 +1,81 @@
+/update:
+post:
+  summary: Update pet entry
+  description: |
+    Updates pet entry in the pets schema by ID.
+  parameters:
+    - name: id
+      in: query
+      description: Pet's ID
+      required: true
+      type: number
+      format: integer
+    - name: name
+      in: query
+      description: Pet's name
+      required: true
+      type: string
+    - name: species
+      in: query
+      description: Pet's species
+      required: true
+      type: string
+    - name: gender
+      in: query
+      description: Pet's gender
+      required: true
+      type: string
+    - name: birthday
+      in: query
+      description: Pet's birthday
+      required: true
+      type: object
+      format: datetime
+  tags:
+    - Pets
+  responses:
+    201:
+      description: JSON response
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/Res'
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/definitions/Error'
+
+definitions:
+  Pet:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier representing a specific pet.
+      name:
+        type: string
+        description: Pet's name.
+      species:
+        type: string
+        description: Pet's species.
+      gender:
+        type: string
+        description: Pet's gender
+      birthday:
+        type: object
+        description: Pet's birthday date object.
+  Res:
+    type: object
+    properties:
+      success:
+        type: string
+        description: Result of the query
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

@@ -1,0 +1,46 @@
+responses:
+  200:
+    description: A JSON of pets.
+    schema:
+      type: array
+      items:
+      $ref: '#/definitions/Pet'
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '#/definitions/Error'
+
+definitions:
+  Pet:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier representing a specific pet.
+      name:
+        type: string
+        description: Pet's name.
+      species:
+        type: string
+        description: Pet's species.
+      gender:
+        type: string
+        description: Pet's gender
+      birthday:
+        type: object
+        description: Pet's birthday date object.
+  Res:
+    type: object
+    properties:
+      success:
+        type: string
+        description: Result of the query
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

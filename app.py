@@ -3,12 +3,17 @@
 # Modules
 import json
 from modules import *
+from flasgger import Swagger
+from flasgger.utils import swag_from
 from flask import Flask, request, jsonify
+from flask_swagger import swagger
 
 # Create flask object
 app = Flask(__name__)
+swag = Swagger(app)
 
 @app.route("/list", methods=["GET"])
+@swag_from('./specs/list.yml')
 def listPets():
     """
         Fetches all entries from
@@ -27,11 +32,12 @@ def listPets():
     # Return data if these present
     # otherwise return empty JSON
     if pet_list:
-        return createResponse(app, pet_list)
+        return createResponse(app, 200, pet_list)
     else:
-        return createResponse(app, "{}")
+        return createResponse(app, 404, "{}")
 
 @app.route("/add", methods=["POST"])
+@swag_from('./specs/add.yml')
 def addPet():
     """
         Fetches all entries from
@@ -60,11 +66,12 @@ def addPet():
         # Fetch pets in the database
         result = connection.add(pet)
 
-        return createResponse(app, "{sucess: True}") if result else createResponse(app, "{sucess: False}")
+        return createResponse(app, 201, "{sucess: True}") if result else createResponse(app, 404, "{sucess: False}")
     else:
         return createResponse(app, "{}")
 
 @app.route("/update", methods=["POST"])
+@swag_from('./specs/update.yml')
 def updatePet():
     """
         Updates a particular pet
@@ -95,9 +102,7 @@ def updatePet():
         # Fetch pets in the database
         result = connection.update(id, pet)
 
-        return createResponse(app, "{sucess: True}") if result else createResponse(app, "{sucess: False}")
-    else:
-        return createResponse(app, "{}")
+        return createResponse(app, 201, "{sucess: True}") if result else createResponse(app, 404, "{sucess: False}")
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -109,4 +114,4 @@ def page_not_found(error):
         Returns:
             JSON: Empty JSON response
     """
-    return jsonify("It seems like you entered the wrong url.")
+    return createResponse(app, 404, "{sucess: False, msg: 'It seems like you entered the wrong url.'}")
