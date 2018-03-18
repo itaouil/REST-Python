@@ -31,9 +31,7 @@ def listPets():
     # Return data if these present
     # otherwise return empty JSON
     if pet_list:
-        return createResponse(app, 200, pet_list)
-    else:
-        return createResponse(app, 404, "{}")
+        return createResponse(app, 200, pet_list) if pet_list else createResponse(app, 404, "{}")
 
 @app.route("/add", methods=["POST"])
 @swag_from('./specs/add.yml')
@@ -66,8 +64,6 @@ def addPet():
         result = connection.add(pet)
 
         return createResponse(app, 201, "{sucess: True}") if result else createResponse(app, 404, "{sucess: False}")
-    else:
-        return createResponse(app, "{}")
 
 @app.route("/update", methods=["POST"])
 @swag_from('./specs/update.yml')
